@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private Button btn_add;
     private ViewGroup layout;
@@ -32,7 +33,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getSupportActionBar().hide();
+        getSupportActionBar().hide();
 
         layout = (ViewGroup) findViewById(R.id.content);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -44,21 +45,21 @@ public class MainActivity extends Activity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                agregarTarea();
+                agregarTarea(view);
             }
         });
     }
 
 
-    public void agregarTarea(){
-
-
+    public void agregarTarea(View view){
         if(tv_tarea.getText().toString().matches("")){
             Toast.makeText(this, "Ingrese la Tarea a Agregar", Toast.LENGTH_SHORT).show();
             return;
         }
         agregar();
         tv_tarea.setText("");
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void agregar(){
@@ -80,5 +81,6 @@ public class MainActivity extends Activity {
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
+
     }
 }
